@@ -1,9 +1,30 @@
 {
+  "name": "rackml-server",
+  "version": "1.0.0",
+  "description": "Rack Visualization Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.1"
+  },
+  "bin": "server.js",
+  "pkg": {
+    "assets": [
+      "index.html",
+      "style.css",
+      "syntax.html",
+      "sample.png",
+      "screenshot.png"
+    ],
+    "targets": [
+      "node18-linux-x64"
+    ],
+    "outputPath": "dist"
   }
 }
