@@ -46,7 +46,7 @@ const COLORSCHEMES = {
 
 const EXPORT_PNG_BUTTON  = '#export-png';
 const EXPORT_SVG_BUTTON  = '#export-svg';
-const PREVIEW_SELECTOR   = '#preview-pane';
+const PREVIEW_SELECTOR   = '#preview-pane .preview';
 const HELP_SYNTAX_BUTTON = '#help-syntax';
 
 // Similar to React.createElement, returns an Element object
@@ -244,16 +244,142 @@ function builder(editor) {
   } catch(err) { console.error(err) }
 }
 
-document.addEventListener('DOMContentLoaded', ev => {
-  const editor = ace.edit('editor');
-  editor.session.setMode('ace/mode/xml');
-  editor.session.on('change', () => builder(editor));
-  builder(editor);
+function syncEditorButtonWidth() {
+    const button = document.querySelector('#editor-open');
+    const rackContent = document.querySelector('.preview > .rack-wrapper, .preview > svg, .preview > *');
 
-  document.querySelector(EXPORT_PNG_BUTTON).addEventListener('click', () => exportPNG(editor));
-  document.querySelector(EXPORT_SVG_BUTTON).addEventListener('click', () => exportSVG(editor));
-  document.querySelector(HELP_SYNTAX_BUTTON).addEventListener('click', () => location.href = "/syntax.html");
+    if (!button || !rackContent) return;
+
+    // DOM 렌더가 확실히 완료된 이후에 너비 반영
+    requestAnimationFrame(() => {
+        const fullWidth = rackContent.scrollWidth;
+        if (fullWidth > 0) {
+            button.style.width = fullWidth + 'px';
+        }
+    });
+}
+
+function showAntDesignMessage(text = '저장되었습니다.') {
+    const container = document.getElementById('ant-message-container');
+
+    const notice = document.createElement('div');
+    notice.className = 'ant-message-notice ant-message-success';
+    notice.innerHTML = `
+    <span role="img" class="anticon anticon-check-circle" aria-label="check-circle">
+      <svg viewBox="64 64 896 896" focusable="false" data-icon="check-circle"
+        width="1em" height="1em" fill="currentColor" aria-hidden="true">
+        <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 
+        448 448-200.6 448-448S759.4 64 512 64zm193.5 
+        301.7l-210.6 292a31.8 31.8 0 
+        01-51.7 0L318.5 484.9c-3.8-5.3 
+        0-12.7 6.5-12.7h46.9c10.2 0 
+        19.9 4.9 25.9 13.3l71.2 98.8 
+        157.2-218c6-8.3 15.6-13.3 
+        25.9-13.3H699c6.5 0 10.3 
+        7.4 6.5 12.7z"></path>
+      </svg>
+    </span>
+    <span>${text}</span>
+  `;
+    container.appendChild(notice);
+
+    setTimeout(() => {
+        container.removeChild(notice);
+    }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', ev => {
+    const editor = ace.edit('editor');
+    editor.session.setMode('ace/mode/xml');
+    editor.session.on('change', () => builder(editor));
+    builder(editor);
+
+    // 초기 XML 로딩
+    fetch('/api/rackml?zone_id=1&name=default')
+        .then(res => {
+            if (!res.ok) throw new Error("No RackML Found");
+            return res.text();
+        })
+        .then(xml => {
+            editor.session.setValue(xml);
+            builder(editor);
+        })
+        .catch(err => {
+            console.warn('초기 로딩 실패:', err.message);
+        });
+
+    // 저장 버튼
+    const saveBtn = document.querySelector('#save-rackml');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const content = editor.session.getValue();
+            fetch('/api/rackml', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    zone_id: 1,
+                    name: 'default',
+                    content: content
+                })
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("DB 저장 실패");
+                    showAntDesignMessage('저장되었습니다.');
+                    // 모달 닫기
+                    document.getElementById('editor-pane').style.display = 'none';
+                    document.getElementById('modal-backdrop').style.display = 'none';
+                    console.log('모달 닫기');
+                })
+                .catch(err => {
+                    console.log('저장 실패: ' + err.message);
+                });
+        });
+    }
+
+    // 내보내기 및 도움말
+    document.querySelector(EXPORT_PNG_BUTTON)?.addEventListener('click', () => exportPNG(editor));
+    document.querySelector(EXPORT_SVG_BUTTON)?.addEventListener('click', () => exportSVG(editor));
+    document.querySelector(HELP_SYNTAX_BUTTON)?.addEventListener('click', () => {
+        window.open('/syntax.html', '_blank', 'noopener');
+    });
+
+    // 모달 제어
+    const editorPane = document.getElementById('editor-pane');
+    const backdrop = document.getElementById('modal-backdrop');
+    const openBtn = document.getElementById('editor-open');
+    const closeBtn = document.getElementById('editor-close');
+
+    openBtn?.addEventListener('click', () => {
+        editorPane.style.display = 'flex';
+        backdrop.style.display = 'block';
+        ace.edit('editor').resize();
+    });
+
+    closeBtn?.addEventListener('click', () => {
+        editorPane.style.display = 'none';
+        backdrop.style.display = 'none';
+    });
+
+    // ResizeObserver로 버튼 너비 조절
+    const button = document.querySelector('#editor-open');
+    const rackContent = document.querySelector('.preview > .rack-wrapper, .preview > svg, .preview > *');
+
+    if (button && rackContent && 'ResizeObserver' in window) {
+        const resizeObserver = new ResizeObserver(syncEditorButtonWidth);
+        resizeObserver.observe(rackContent);
+    }
+
+    // MutationObserver로 SVG 삽입 또는 DOM 변경 감지
+    const previewArea = document.querySelector('.preview');
+    if (previewArea && 'MutationObserver' in window) {
+        const mutationObserver = new MutationObserver(syncEditorButtonWidth);
+        mutationObserver.observe(previewArea, { childList: true, subtree: true });
+    }
+
+    // fallback 초기 호출
+    setTimeout(syncEditorButtonWidth, 100);
 });
+
 
 // Returns a SVG document as text
 function toSVG(rackml) {
@@ -744,3 +870,4 @@ function patternEmpty() {
     'stroke-width': 5,
   }));
 }
+

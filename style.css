@@ -22,20 +22,34 @@ body {
 }
 
 #editor-pane {
-  display: flex;
+  display: none;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);  /* 가운데 정렬 */
+  width: 60vw;                  /* 폭 줄임 */
+  height: 70vh;                 /* 높이도 줄임 */
+  background-color: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
   flex-direction: column;
-  overflow:none;
-  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 999;
 }
 
 #editor {
   flex: 1;
-  padding: 1rem;
-
-  border: none;
-  border-radius: none;
-  resize: none;
-  outline: none;
+  height: 100%;
   font-size: 12pt;
 }
 
@@ -47,12 +61,25 @@ body {
   flex: 0 0 auto;
 }
 
+#preview-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  flex: 1;
+}
+
 .toolbar {
   background-color: #F7FAFC;
   display: flex;
   align-items: center;
   padding: 0.5rem;
   border-bottom: 1px solid #718096;
+  align-items: flex-start;
 }
 
 .toolbar .label {
@@ -112,3 +139,113 @@ body {
   flex: 1;
   margin: 0;
 }
+
+button.ant-btn {
+  background-color: #1677ff;
+  border: 1px solid #1677ff;
+  color: white;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Hover & Active */
+button.ant-btn:hover {
+  background-color: #4096ff;
+  border-color: #4096ff;
+}
+
+button.ant-btn:active {
+  background-color: #0958d9;
+  border-color: #0958d9;
+}
+
+/* 중앙 정렬용 Wrapper */
+.center-button {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+button.ant-btn.ant-btn-long {
+  width: 100vw;
+  max-width: 100%;
+  min-width: 100%;
+  background-color: #1890ff;
+  border: 1px solid #1890ff;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+  display: block;
+  height: 90%;
+}
+
+/* 모달 배경 */
+#modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+}
+
+.sticky-toolbar {
+  position: sticky;
+  top: 0;
+  padding-bottom: 20px;
+  z-index: 10;
+  background-color: white;
+  padding: 8px 0px 20px;
+  width: max-content;
+  min-width: 100%;
+  text-align: center;
+  padding-top: 0px;
+}
+
+.ant-message {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1010;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ant-message-notice {
+  background: #fff;
+  color: rgba(0, 0, 0, 0.88);
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  border: none;
+  animation: fadeInOut 3s forwards;
+}
+
+.ant-message-success .anticon {
+  color: #52c41a;
+  font-size: 16px;
+}
+
+@keyframes fadeInOut {
+  0%   { opacity: 0; transform: translateY(-10px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  90%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+

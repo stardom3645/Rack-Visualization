@@ -1,94 +1,138 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>RackML Syntax</title>
-  </head>
-  <body>
-    <h1>RackML Syntax</h1>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>RackML 문법</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      background-color: #f5f5f5;
+      color: #1f1f1f;
+      line-height: 1.6;
+      padding: 2rem;
+    }
 
-    <p>A <em>RackML</em> document must have an outer <tt>&lt;racks&gt;</tt> element.</p>
+    h1 {
+      color: #1677ff;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #1677ff;
+      padding-bottom: 0.5rem;
+    }
 
-    <h2><tt>&lt;racks&gt;</tt></h2>
+    h2 {
+      color: #0958d9;
+      margin-top: 2rem;
+      font-size: 1.3rem;
+    }
 
-    <p>A <tt>&lt;racks&gt;</tt> element may contain any of the following attributes:</p>
+    p {
+      margin: 0.5rem 0 1rem 0;
+    }
 
-    <dl>
-      <dt><tt>base</tt></dt>
-      <dd>The base URL to use for links</dd>
-    </dl>
+    dl {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
 
-    <p>The <tt>&lt;racks&gt;</tt> element contains zero or more <tt>&lt;racks&gt;</tt> elements.</p>
+    dt {
+      font-weight: bold;
+      margin-top: 0.8rem;
+      color: #333;
+    }
 
-    <h2><tt>&lt;rack&gt;</tt></h2>
+    dd {
+      margin-left: 1rem;
+      color: #555;
+    }
 
-    <p>A <tt>&lt;rack&gt;</tt> element may contain the following attributes:</p>
+    tt, code {
+      background-color: #f0f2f5;
+      font-family: monospace;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
 
-    <dl>
-      <dt><tt>height</tt></dt>
-      <dd>The height, in rack units, of this rack</dd>
+    em {
+      color: #4096ff;
+      font-style: normal;
+      font-weight: 500;
+    }
 
-      <dt><tt>name</tt></dt>
-      <dd>The name of the rack. Displayed above the rack.</dd>
-    </dl>
+    .note {
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+<h1>RackML 문법</h1>
 
-    <h2><tt>&lt;rack&gt;</tt> children</h2>
+<p><em>RackML</em> 문서는 반드시 외부에 <tt>&lt;racks&gt;</tt> 요소를 포함해야 합니다.</p>
 
-    <p>A <tt>&lt;rack&gt; element may contain any of the following elements:</p>
+<h2><tt>&lt;racks&gt;</tt></h2>
+<p><tt>&lt;racks&gt;</tt> 요소는 다음과 같은 속성을 가질 수 있습니다:</p>
+<dl>
+  <dt><tt>base</tt></dt>
+  <dd>링크에 사용할 기본 URL</dd>
+</dl>
+<p><tt>&lt;racks&gt;</tt> 요소는 0개 이상의 <tt>&lt;rack&gt;</tt> 요소를 포함할 수 있습니다.</p>
 
-    <dl>
-      <dt>&lt;cables&gt;</dt>
-      <dd>Represents a cable management system</dd>
+<h2><tt>&lt;rack&gt;</tt></h2>
+<p><tt>&lt;rack&gt;</tt> 요소는 다음과 같은 속성을 가질 수 있습니다:</p>
+<dl>
+  <dt><tt>height</tt></dt>
+  <dd>해당 랙의 높이 (단위: rack unit)</dd>
+  <dt><tt>name</tt></dt>
+  <dd>랙의 이름. SVG에서 랙 위에 표시됩니다.</dd>
+</dl>
 
-      <dt>&lt;firewall&gt;</dt>
-      <dd>Represents a firewall</dd>
+<h2><tt>&lt;rack&gt;</tt>의 자식 요소</h2>
+<p><tt>&lt;rack&gt;</tt> 요소는 다음과 같은 요소들을 포함할 수 있습니다:</p>
+<dl>
+  <dt>&lt;cables&gt;</dt>
+  <dd>케이블 관리 시스템</dd>
+  <dt>&lt;firewall&gt;</dt>
+  <dd>방화벽</dd>
+  <dt>&lt;gap&gt;</dt>
+  <dd>빈 공간</dd>
+  <dt>&lt;keyboard&gt;</dt>
+  <dd>키보드</dd>
+  <dt>&lt;kvm&gt;</dt>
+  <dd>KVM 스위치</dd>
+  <dt>&lt;monitor&gt;</dt>
+  <dd>디스플레이 장치</dd>
+  <dt>&lt;patch&gt;</dt>
+  <dd>패치 패널</dd>
+  <dt>&lt;pdu&gt;</dt>
+  <dd>전원 분배 장치(PDU)</dd>
+  <dt>&lt;san&gt;</dt>
+  <dd>SAN 스토리지</dd>
+  <dt>&lt;server&gt;</dt>
+  <dd>서버</dd>
+  <dt>&lt;switch&gt;</dt>
+  <dd>네트워크 스위치</dd>
+  <dt>&lt;tape&gt;</dt>
+  <dd>테이프 드라이브</dd>
+  <dt>&lt;ups&gt;</dt>
+  <dd>무정전 전원장치(UPS)</dd>
+</dl>
 
-      <dt>&lt;gap&gt;</dt>
-      <dd>Empty space</dd>
+<p>이러한 요소들은 다음과 같은 속성을 가질 수 있습니다:</p>
+<dl>
+  <dt><tt>at</tt></dt>
+  <dd>장비가 위치하는 최하단 랙 유닛</dd>
+  <dt><tt>height</tt></dt>
+  <dd>장비의 높이 (단위: rack unit)</dd>
+  <dt><tt>href</tt></dt>
+  <dd>추가 정보를 위한 URL. SVG에서 클릭 가능하게 됩니다.</dd>
+</dl>
 
-      <dt>&lt;keyboard&gt;</dt>
-      <dd>Represents a keyboard</dd>
-
-      <dt>&lt;kvm&gt;</dt>
-      <dd>Represents a KVM-switch</dd>
-
-      <dt>&lt;monitor&gt;</dt>
-      <dd>Represents a VDU</dd>
-
-      <dt>&lt;patch&gt;</dt>
-      <dd>Represents a patch panel</dd>
-
-      <dt>&lt;pdu&gt;</dt>
-      <dd>Represents a power distribution unit</dd>
-
-      <dt>&lt;san&gt;</dt>
-      <dd>Represents a SAN server</dd>
-
-      <dt>&lt;server&gt;</dt>
-      <dd>Represents a compute server</dd>
-
-      <dt>&lt;switch&gt;</dt>
-      <dd>Represents a networking switch</dd>
-
-      <dt>&lt;tape&gt;</dt>
-      <dd>Represents a tape drive</dd>
-
-      <dt>&lt;ups&gt;</dt>
-      <dd>Represents an uninterruptable power supply</dd>
-    </dl>
-
-    Each of these elements may include the following attributes:
-
-    <dl>
-      <dt><tt>at</tt></dt>
-      <dd>The lowest rack unit the device occupies.</dd>
-
-      <dt><tt>height</tt></dt>
-      <dd>The height, in rack units, of the device</dd>
-
-      <dt><tt>href</tt></dt>
-      <dd>A URL for additional information. The rack element will be clickable in the renderable SVG.</dd>
-    </dl>
-  </body>
+<p class="note">※ 문법에 맞지 않는 XML은 제대로 렌더링되지 않을 수 있습니다.</p>
+</body>
 </html>
-

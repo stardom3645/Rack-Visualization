@@ -1,63 +1,83 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>Rack Elevation Diagramming</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" crossorigin="anonymous" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/snippets/xml.min.js" crossorigin="anonymous"  ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-xml.min.js" crossorigin="anonymous"  ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/worker-xml.js" crossorigin="anonymous"  ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" crossorigin="anonymous"
+            integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/snippets/xml.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-xml.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/worker-xml.js" crossorigin="anonymous"></script>
+    <!-- Ant Design Reset 스타일 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@5.13.1/dist/reset.min.css" />
     <script type="module" src="app.js"></script>
-  </head>
-  <body>
-    <div id="editor-pane">
-      <div class="toolbar">
+</head>
+<body>
+<div id="modal-backdrop"></div>
+<div id="editor-pane">
+    <div class="toolbar">
         <div class="button-group">
-          <div class="buttons">
-            <button id="export-png">PNG</button>
-            <button id="export-svg">SVG</button>
-          </div>
-          <span class="label">Export</span>
+            <div class="buttons">
+                <button class="ant-btn" id="export-png">PNG</button>
+                <button class="ant-btn" id="export-svg">SVG</button>
+            </div>
+            <span class="label">내보내기</span>
         </div>
-
         <div class="button-group">
-          <div class="buttons">
-            <button id="help-syntax">Syntax</button>
-          </div>
-          <span class="label">Help</button>
+            <div class="buttons">
+                <button class="ant-btn" id="save-rackml">저장</button>
+            </div>
         </div>
-      </div>
-
-      <div id="editor" name="rackml">&lt;racks base=&quot;Rack Group Name&quot;&gt;
-  &lt;rack height=&quot;42&quot; name=&quot;Example&quot;&gt;
-    &lt;patch&gt;Patch&lt;/patch&gt;
-    &lt;cables&gt;Cables&lt;/cables&gt;
-    &lt;switch&gt;Switch&lt;/switch&gt;
-    &lt;cables&gt;Cables&lt;/cables&gt;
-    &lt;patch&gt;Patch&lt;/patch&gt;
-    &lt;cables&gt;Cables&lt;/cables&gt;
-    &lt;switch&gt;Switch&lt;/switch&gt;
-    &lt;cables&gt;Cables&lt;/cables&gt;
-    &lt;firewall href=&quot;firewall-01&quot;&gt;Firewall&lt;/firewall&gt;
-    &lt;cables&gt;Cables&lt;/cables&gt;
-    &lt;firewall href=&quot;firewall-02&quot;&gt;Firewall&lt;/firewall&gt;
-    &lt;cables at=&quot;31&quot;&gt;Cables&lt;/cables&gt;
-    &lt;monitor height=&quot;8&quot;&gt;Monitor&lt;/monitor&gt;
-    &lt;keyboard&gt;Keyboard&lt;/keyboard&gt;
-    &lt;kvm&gt;KVM&lt;/kvm&gt;
-    &lt;blank height=&quot;2&quot;/&gt;
-    &lt;server height=&quot;2&quot; href=&quot;server-01&quot;&gt;Server&lt;/server&gt;
-    &lt;san height=&quot;2&quot; href=&quot;san-01&quot;&gt;Storage Area Network&lt;/san&gt;
-    &lt;server href=&quot;server-02&quot; height=&quot;4&quot;&gt;Server&lt;/server&gt;
-    &lt;gap height=&quot;2&quot;/&gt;
-    &lt;pdu&gt;Power Distribution Unit&lt;/pdu&gt;
-    &lt;ups height=&quot;4&quot;&gt;Power Supply&lt;/ups&gt;
-  &lt;/rack&gt;
-&lt;/racks&gt;</div>
+        <div class="button-group">
+            <div class="ant-btn" class="buttons">
+                <button class="ant-btn" id="editor-close">닫기</button>
+            </div>
+        </div>
+        <div class="button-group">
+            <div class="buttons">
+                <button class="ant-btn" id="help-syntax">도움말</button>
+            </div>
+        </div>
     </div>
-    <div id="preview-pane">
-      <div class="preview"></div>
+    <div class="preview"></div>
+    <div id="editor" name="rackml">&lt;racks base=&quot;Rack Group Name&quot;&gt;
+        &lt;rack height=&quot;42&quot; name=&quot;Example&quot;&gt;
+        &lt;patch&gt;Patch&lt;/patch&gt;
+        &lt;cables&gt;Cables&lt;/cables&gt;
+        &lt;switch&gt;Switch&lt;/switch&gt;
+        &lt;cables&gt;Cables&lt;/cables&gt;
+        &lt;patch&gt;Patch&lt;/patch&gt;
+        &lt;cables&gt;Cables&lt;/cables&gt;
+        &lt;switch&gt;Switch&lt;/switch&gt;
+        &lt;cables&gt;Cables&lt;/cables&gt;
+        &lt;firewall&gt;Firewall&lt;/firewall&gt;
+        &lt;cables&gt;Cables&lt;/cables&gt;
+        &lt;firewall&gt;Firewall&lt;/firewall&gt;
+        &lt;cables at=&quot;31&quot;&gt;Cables&lt;/cables&gt;
+        &lt;monitor height=&quot;8&quot;&gt;Monitor&lt;/monitor&gt;
+        &lt;keyboard&gt;Keyboard&lt;/keyboard&gt;
+        &lt;kvm&gt;KVM&lt;/kvm&gt;
+        &lt;blank height=&quot;2&quot;/&gt;
+        &lt;server height=&quot;2&quot;&gt;Server&lt;/server&gt;
+        &lt;san height=&quot;2&quot;&gt;Storage Area Network&lt;/san&gt;
+        &lt;server height=&quot;4&quot;&gt;Server&lt;/server&gt;
+        &lt;gap height=&quot;2&quot;/&gt;
+        &lt;pdu&gt;Power Distribution Unit&lt;/pdu&gt;
+        &lt;ups height=&quot;4&quot;&gt;Power Supply&lt;/ups&gt;
+        &lt;/rack&gt;
+        &lt;/racks&gt;
     </div>
-  </body>
+</div>
+<div id="preview-pane">
+    <div class="sticky-toolbar">
+        <button class="ant-btn ant-btn-long" id="editor-open">
+            편집
+        </button>
+    </div>
+    <div class="preview"></div>
+</div>
+<div id="ant-message-container" class="ant-message"></div>
+</body>
 </html>
