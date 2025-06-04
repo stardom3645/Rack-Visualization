@@ -14,8 +14,8 @@ app.use(express.static(__dirname));
 // MySQL 연결
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'cloud',
-    password: 'cloud',
+    user: 'root',
+    password: 'Ablecloud1!',
     database: 'cloud'
 });
 
