@@ -16,11 +16,7 @@
   "bin": "server.js",
   "pkg": {
     "assets": [
-      "index.html",
-      "style.css",
-      "syntax.html",
-      "sample.png",
-      "screenshot.png"
+      "public/**/*"
     ],
     "targets": [
       "node18-linux-x64"

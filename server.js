@@ -2,14 +2,20 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 const port = 7077;
 
-// 미들웨어 등록
+// 미들웨어
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(express.static(__dirname));
+// 정적 파일 경로 설정 (pkg용)
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 // MySQL 연결
 const db = mysql.createConnection({
@@ -52,10 +58,10 @@ app.post('/api/rackml', (req, res) => {
     }
 
     const sql = `
-    INSERT INTO rackml_config (zone_id, name, content)
-    VALUES (?, ?, ?)
-    ON DUPLICATE KEY UPDATE content = VALUES(content), updated_at = CURRENT_TIMESTAMP
-  `;
+        INSERT INTO rackml_config (zone_id, name, content)
+        VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE content = VALUES(content), updated_at = CURRENT_TIMESTAMP
+    `;
 
     db.query(sql, [zone_id, name, content], (err) => {
         if (err) return res.status(500).send(err);

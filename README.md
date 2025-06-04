@@ -5,7 +5,7 @@ Renders diagrams to SVG and PNG.
 
 ## Screenshot
 
-![Interface](./screenshot.png)
+![Interface](public/screenshot.png)
 
 ## Sample RackML
 
@@ -40,5 +40,5 @@ Renders diagrams to SVG and PNG.
 
 ## Sample PNG
 
-![Sample](./sample.png)
+![Sample](public/sample.png)
 
