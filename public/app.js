@@ -871,3 +871,34 @@ function patternEmpty() {
   }));
 }
 
+document.getElementById('editor-open').addEventListener('click', openEditor);
+document.getElementById('editor-close').addEventListener('click', closeEditor);
+
+function openEditor() {
+    const pane = document.getElementById('editor-pane');
+    const backdrop = document.getElementById('modal-backdrop');
+
+    // step 1: display를 먼저 켬
+    pane.classList.add('visible');
+
+    // step 2: 다음 프레임에 show를 붙임
+    requestAnimationFrame(() => {
+        pane.classList.add('show');
+    });
+
+    backdrop.classList.add('show');
+}
+
+function closeEditor() {
+    const pane = document.getElementById('editor-pane');
+    const backdrop = document.getElementById('modal-backdrop');
+
+    // 서서히 사라지는 애니메이션 트리거
+    pane.classList.remove('show');
+    backdrop.classList.remove('show');
+
+    // 트랜지션 지속시간 후에 display 끄기
+    setTimeout(() => {
+        pane.classList.remove('visible'); // display: none 적용
+    }, 600); // CSS transition과 동일한 시간 (0.3s)
+}

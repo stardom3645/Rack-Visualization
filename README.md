@@ -17,8 +17,6 @@ Express와 MySQL을 기반으로 한 API 서버와 패키징 요소가 포함되
 ---
 
 ## 🗂️ 프로젝트 구조
-Rack-Visualization/
-## 🗂️ 프로젝트 구조
 
 ```bash
 Rack-Visualization/
